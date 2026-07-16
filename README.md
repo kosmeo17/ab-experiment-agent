@@ -10,7 +10,7 @@
 
 ```bash
 mkdir -p ~/.codex/skills
-git clone <你的 GitHub 仓库地址> ~/.codex/skills/ab-experiment-agent
+git clone https://github.com/kosmeo17/ab-experiment-agent.git ~/.codex/skills/ab-experiment-agent
 ```
 
 安装后重启 Codex。

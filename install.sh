@@ -1,22 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="${AB_EXPERIMENT_AGENT_REPO_URL:-}"
+REPO_URL="${AB_EXPERIMENT_AGENT_REPO_URL:-https://github.com/kosmeo17/ab-experiment-agent.git}"
 TARGET="${CODEX_HOME:-$HOME/.codex}/skills/ab-experiment-agent"
-
-if [[ -z "$REPO_URL" ]]; then
-  cat >&2 <<'MSG'
-请先提供仓库地址，例如：
-
-AB_EXPERIMENT_AGENT_REPO_URL="https://github.com/你的用户名/ab-experiment-agent.git" bash install.sh
-
-或者直接运行：
-
-mkdir -p ~/.codex/skills
-git clone https://github.com/你的用户名/ab-experiment-agent.git ~/.codex/skills/ab-experiment-agent
-MSG
-  exit 1
-fi
 
 mkdir -p "$(dirname "$TARGET")"
 
