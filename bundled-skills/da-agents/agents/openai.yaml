@@ -1,0 +1,4 @@
+interface:
+  display_name: "da_agents"
+  short_description: "Use local da_agents_v2 workflows"
+  default_prompt: "Use $da-agents to route a data query, AB review, or analysis through da_agents_v2."

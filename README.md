@@ -6,11 +6,10 @@
 
 ## 安装
 
-把本仓库克隆到 Codex skills 目录：
+复制下面命令到终端执行。它会安装 AB 实验助手，并同步安装 DA、CMS、飞书文档相关入口 skill：
 
 ```bash
-mkdir -p ~/.codex/skills
-git clone https://github.com/kosmeo17/ab-experiment-agent.git ~/.codex/skills/ab-experiment-agent
+bash <(curl -fsSL https://raw.githubusercontent.com/kosmeo17/ab-experiment-agent/main/install.sh)
 ```
 
 安装后重启 Codex。
@@ -18,9 +17,10 @@ git clone https://github.com/kosmeo17/ab-experiment-agent.git ~/.codex/skills/ab
 如果已经安装过，更新方式是：
 
 ```bash
-cd ~/.codex/skills/ab-experiment-agent
-git pull
+bash <(curl -fsSL https://raw.githubusercontent.com/kosmeo17/ab-experiment-agent/main/install.sh)
 ```
+
+安装脚本只安装 skill 入口和检查本机环境，不会复制个人登录态或权限。飞书、CMS、数据查询仍需要使用者本人在本机授权。
 
 ## 使用
 
@@ -55,6 +55,13 @@ $ab-experiment-agent 帮我看一个 AB 实验
 ```
 
 如果助手展示 AB 实验入口，或开始追问实验必要性、指标、对象、触发场景等问题，说明安装成功。
+
+需要确认依赖 skill 时，也可以分别输入：
+
+```text
+$da-agents
+$cms
+```
 
 ## 维护说明
 

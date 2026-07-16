@@ -1,0 +1,4 @@
+interface:
+  display_name: "CMS CLI"
+  short_description: "Use HelloTalk CMS-CLI safely"
+  default_prompt: "Use $cms to query or analyze HelloTalk CMS configuration with CMS-CLI."
