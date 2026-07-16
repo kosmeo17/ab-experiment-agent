@@ -1,0 +1,4 @@
+interface:
+  display_name: "AB Experiment Agent"
+  short_description: "评审、生成和完善运营 AB 实验方案"
+  default_prompt: "Use $ab-experiment-agent to review or draft this AB 实验方案，先判断实验必要性，再追问最高优先级缺口；如果方案成熟，准备或按需写入飞书云文档；不要连接 DA/Doris/TA 等数据平台。"
