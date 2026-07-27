@@ -24,19 +24,21 @@ bash <(curl -fsSL https://raw.githubusercontent.com/kosmeo17/ab-experiment-agent
 
 ## 使用
 
-推荐显式调用：
+推荐直接用自然语言说 AB 实验相关问题：
 
 ```text
-$ab-experiment-agent 帮我看一个 AB 实验
+帮我看一个 AB 实验
 ```
 
-也可以直接用自然语言：
+只要问题里提到 AB 实验、实验方案、指标、分组、灰度、样本量或实验复盘，Codex 会优先自动匹配到 AB 实验助手。
+
+如果没有自动命中，或者想明确指定这个能力，再使用显式调用：
 
 ```text
-帮我 review 一个 Paywall 文案 AB 实验
+$ab-experiment-agent 帮我 review 一个 Paywall 文案 AB 实验
 ```
 
-如果 Codex 已正确加载本 skill，它会根据 `SKILL.md` 的 description 自动识别 AB 实验相关问题。`/` 菜单是否展示本地 skill 取决于 Codex 当前客户端能力，不作为安装成功的唯一判断。
+`/` 菜单是否展示本地 skill 取决于 Codex 当前客户端能力，不作为安装成功的唯一判断。
 
 ## 适合场景
 
@@ -51,10 +53,10 @@ $ab-experiment-agent 帮我看一个 AB 实验
 重启 Codex 后，新开一个对话输入：
 
 ```text
-$ab-experiment-agent 帮我看一个 AB 实验
+帮我看一个 AB 实验
 ```
 
-如果助手展示 AB 实验入口，或开始追问实验必要性、指标、对象、触发场景等问题，说明安装成功。
+如果助手展示 AB 实验入口，或开始追问实验必要性、指标、对象、触发场景等问题，说明安装成功。若没有自动命中，再用 `$ab-experiment-agent 帮我看一个 AB 实验` 兜底验证。
 
 需要确认依赖 skill 时，也可以分别输入：
 
