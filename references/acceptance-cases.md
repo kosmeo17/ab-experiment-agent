@@ -386,6 +386,7 @@ User has a mature plan and asks for sample size for an ARPU core metric.
 Expected:
 
 - Use notebook-style inputs: first-week WAU, new-WAU week-2 attenuation, 14-day core metric baseline, MDE type/value, metric type, effective minimum treatment-group ratio, and ARPU/mean conversion inputs.
+- Before calculating, state the sample-size source. If a company notebook / calculator / provided file is accessible, read or run it before any local formula. Known local company notebook candidates include `/Users/sequioa/Downloads/计算实验的预估样本量.ipynb`.
 - If gray is 20% and the smallest experiment group is 30%, and WAU is not already deducted for gray/mutex, effective minimum group ratio is 6%.
 - If WAU is already experiment-pool traffic after gray/mutex, do not multiply again.
 
@@ -393,6 +394,7 @@ Forbidden:
 
 - Replace ARPU sample size with payment-conversion sample size.
 - Treat `scripts/sample_size.py` output as formal company-calculator output.
+- Use a local mean-difference formula, standard deviation formula, historical approximation, or AI estimate as the formal sample-size result when a company notebook / calculator / provided file is accessible.
 
 ## Case 25: Post-Document Capability Reminder
 
@@ -485,6 +487,7 @@ Expected:
 - Answer directly whether the calculation used the company calculator / provided file / local rough script.
 - If the calculator or file was not actually read, say it was not used.
 - Explain that formal ARPU / mean sample-size needs company notebook / calculator inputs or data BP result.
+- If a company calculator or notebook is accessible, do not continue defending the rough formula; rerun or restate the result using the company source.
 
 Forbidden:
 
@@ -526,3 +529,54 @@ Forbidden:
 
 - Ask for core metric, 7-day flow, 14-day baseline, MDE, and mutual exclusion all in one turn.
 - Make a long checklist feel like homework for the owner.
+
+## Case 32: Mutual Exclusion Ratio Is Not Required Before Sample Calculation
+
+User provides:
+
+```text
+核心指标是实验期 VIP ARPU，对象和场景都清楚，A/B/C/D 四组均分。线上有一个同入口 Paywall 价格实验需要互斥，但我还没决定这个实验要占多少互斥池。你先算两周需要多少灰度。
+```
+
+Expected:
+
+- Confirm that the mutual-exclusion relationship is known and must be respected.
+- Do not ask the owner to provide the mutual-exclusion usable ratio before sample-size calculation.
+- Calculate or explain that the first output should be `required effective traffic = gray ratio × mutual-exclusion usable ratio`.
+- Provide combination guidance after the required effective traffic is known, such as 20% effective traffic can be achieved by `20% mutex usable × 100% gray`, `40% mutex usable × 50% gray`, or `80% mutex usable × 25% gray`.
+- State that final configuration, final gray, final duration feasibility, and formal Feishu document still require the owner to choose the final gray and mutual-exclusion combination.
+
+Forbidden:
+
+- Block sample-size calculation only because the mutual-exclusion ratio is missing.
+- Default mutual-exclusion usable ratio to 100% and output a final gray.
+- Output final duration feasibility before the final combination is chosen.
+
+## Case 33: Narrow Data Lookup Does Not Drift
+
+User:
+
+```text
+用这个 table 查一下最近进入 Profile / Metab 的非 VIP 用户量。
+```
+
+or:
+
+```text
+唯一没定的是进入 Metab 的英文事件名和字段。你继续查，只查事件定义。
+```
+
+Expected:
+
+- Treat the request as a narrow data lookup, not a full AB-flow continuation.
+- First answer only the named table, event, field, or single metric.
+- Return `查到什么`、`口径/限制`、`对当前判断的影响`、`建议下一步`.
+- The business interpretation may say whether the result is enough to support the current data Gate, sample-size input, trigger-scene denominator, or field confirmation.
+- Stop after the result and wait for the user to explicitly continue.
+
+Forbidden:
+
+- Calculate sample size, gray ratio, period feasibility, or formal document status before returning the named lookup.
+- Inspect unrelated AB rules, CMS configuration, Feishu documents, or skill files.
+- Expand to other tables, extra metrics, baselines, historical fluctuation, segmentation, or attribution unless the user asks to continue.
+- Return only raw event names, fields, SQL, CSV paths, or logs without business meaning.
