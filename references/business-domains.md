@@ -9,20 +9,20 @@ This file is not a business encyclopedia. Use it to route the experiment into th
 - Identify the primary business domain after experiment necessity is sufficient and before proposing evaluation metrics.
 - If the domain is unclear, infer it from the strategy's affected user behavior, target metric, trigger scene, and risk surface. Mark the domain as `AI 推断`.
 - Do not pause only to ask for the domain unless different domain choices would lead to opposite core metrics or launch decisions.
-- When one experiment affects multiple domains, use the primary domain for the core metric and use affected domains for guardrail metrics.
+- When one experiment affects multiple domains, use the primary domain for the core metric. The experiment metric list still has only one guardrail: revenue-related core metrics use retention rate; retention-related core metrics use revenue ARPU. Other cross-domain risks belong in risk notes or launch monitoring.
 - For internal review reports or formal drafts, separate:
   - `已知事实`: facts from the user, document, data, or source material.
   - `AI 判断`: recommendations from AB methodology and this domain radar.
   - `待确认假设`: assumptions that need the owner or business side to confirm.
 - In step-by-step coaching, do not print these labels. Ask the next question or give one concise recommendation instead.
 - When the owner does not know how to write the metric plan, recommend 1 core metric and 2 alternatives. For each, state the reason, suitable premise, risk, and assumptions to confirm.
-- Do not approve launch only because the core metric is positive. Check the domain guardrails and cross-business guardrails first.
+- Do not approve launch only because the core metric is positive. Check the single standard guardrail and the relevant risk monitoring first.
 
 ## Domain Overview
 
-| 业务域 | 核心目标 | 常见核心指标 | 必看/观察指标 | 护栏指标与风险 |
+| 业务域 | 核心目标 | 常见核心指标 | 必看/观察指标 | 风险说明与上线监控 |
 | --- | --- | --- | --- | --- |
-| 商业化 | 提升收入、付费效率、订阅价值 | 收入、ARPU、ARPPU、付费率、订阅转化率、复购率 | 曝光、点击、下单、支付成功、SKU 分布、优惠使用、退款原因 | 留存下降、退款上升、投诉、支付失败、价格感知受损、短期提收长期伤害 |
+| 商业化 | 提升收入、付费效率、订阅价值 | 收入、ARPU、ARPPU、付费率、订阅转化率、复购率 | 曝光、点击、下单、支付成功、SKU 分布、优惠使用 | 留存下降、退款上升、投诉、支付失败、价格感知受损、短期提收长期伤害 |
 | 留存/活跃 | 提升用户持续使用和关键行为沉淀 | D1/D7/D30 留存、活跃率、回访率 | 首日关键行为、会话数、好友/关注/消息、任务完成、push 到达/点击 | 打扰上升、卸载、投诉、虚假活跃、短期激励透支长期留存 |
 | 直播语聊 | 提升房间供需、互动和消费生态 | 进房率、房间停留、上麦率、互动率、送礼收入 | 开播数、主播在线时长、房间曝光、观众转主播、礼物转化 | 房间氛围变差、主播流失、低质房间增多、付费用户体验下降 |
 | 风控/安全 | 降低风险损失，同时控制误伤 | 拦截率、违规率、风险损失、审核命中率 | 申诉率、解封率、审核耗时、风险用户复犯、正常用户通过率 | 误伤正常用户、转化下降、留存下降、客服压力、地区/人群偏差 |
@@ -52,10 +52,9 @@ This file is not a business encyclopedia. Use it to route the experiment into th
 
 曝光、点击、下单、支付成功、支付失败、SKU 分布、优惠使用、订单金额、付费路径分布、退款原因。
 
-### 护栏指标
+### 唯一护栏与风险说明
 
-留存、退款率、投诉、支付失败率、价格页退出率、低价 SKU 挤占、长期复购、付费用户体验。
-For SKU unbundling or lower-priced paid benefits, explicitly guard against cannibalizing VIP/SVIP purchase and revenue.
+收入类核心指标的唯一护栏是标准库中的留存率。退款、投诉、支付失败、价格感知、SKU 挤占和复购变化写入风险说明或上线监控，不作为额外实验指标。
 
 ### 常见误判
 
@@ -66,7 +65,7 @@ For SKU unbundling or lower-priced paid benefits, explicitly guard against canni
 
 ### 不确定时的回答边界
 
-没有价格、国家、平台、历史付费层级和退款数据时，不要直接判断价格策略可上线。可以给支付漏斗、收入指标和风险护栏建议。
+没有价格、国家、平台、历史付费层级和退款数据时，不要直接判断价格策略可上线。可以给支付漏斗、收入指标和风险说明/上线监控建议。
 
 ## 留存/活跃
 
@@ -88,9 +87,9 @@ For SKU unbundling or lower-priced paid benefits, explicitly guard against canni
 
 首日关键行为、会话数、好友/关注/消息、内容消费、任务完成、push 到达、push 点击、回访路径。
 
-### 护栏指标
+### 唯一护栏与风险说明
 
-卸载、通知关闭、投诉、负反馈、虚假活跃、激励领取后流失、商业化或社交核心行为受损。
+留存类核心指标的唯一护栏是标准库中的收入 ARPU。卸载、通知关闭、投诉、负反馈和商业化/社交副作用写入风险说明或上线监控，不作为额外实验指标。
 
 ### 常见误判
 
@@ -123,9 +122,9 @@ For SKU unbundling or lower-priced paid benefits, explicitly guard against canni
 
 房间曝光、点击、开播数、主播在线时长、观众转主播、关注、评论、公屏、礼物转化、房间复访。
 
-### 护栏指标
+### 风险说明与上线监控
 
-主播流失、低质房间增多、房间举报、付费用户体验下降、新用户退出、冷启动房间曝光挤占。
+主播流失、低质房间增多、房间举报、付费用户体验下降、新用户退出、冷启动房间曝光挤占。实验指标栏仍按核心指标类型只保留一个标准护栏。
 
 ### 常见误判
 
@@ -158,9 +157,9 @@ For SKU unbundling or lower-priced paid benefits, explicitly guard against canni
 
 申诉率、解封率、审核耗时、风险用户复犯、举报率、审核队列量、正常用户转化。
 
-### 护栏指标
+### 风险说明与上线监控
 
-误伤率、正常用户留存/转化、客服压力、申诉处理时长、地区/人群偏差、体验投诉。
+误伤率、正常用户留存/转化、客服压力、申诉处理时长、地区/人群偏差、体验投诉。实验指标栏仍按核心指标类型只保留一个标准护栏。
 
 ### 常见误判
 
@@ -193,9 +192,9 @@ For SKU unbundling or lower-priced paid benefits, explicitly guard against canni
 
 老师响应、排课成功、学习时长、课后评价、作业完成、课程路径完成、退款原因。
 
-### 护栏指标
+### 风险说明与上线监控
 
-老师供给不足、退款、差评、完课下降、学习体验下降、低质线索增加、客服压力。
+老师供给不足、退款、差评、完课下降、学习体验下降、低质线索增加、客服压力。实验指标栏仍按核心指标类型只保留一个标准护栏。
 
 ### 常见误判
 
@@ -206,7 +205,7 @@ For SKU unbundling or lower-priced paid benefits, explicitly guard against canni
 
 ### 不确定时的回答边界
 
-没有课程类型、供给能力和用户学习阶段时，不要直接判断转化提升就是有效。至少补完课、退款、老师承接护栏。
+没有课程类型、供给能力和用户学习阶段时，不要直接判断转化提升就是有效。至少补完课、退款和老师承接的风险说明/上线监控。
 
 ## 社交/匹配/关系
 
@@ -228,9 +227,9 @@ For SKU unbundling or lower-priced paid benefits, explicitly guard against canni
 
 曝光、点击、资料页访问、消息发送、好友添加、匹配成功、对话轮次、次日会话回访。
 
-### 护栏指标
+### 风险说明与上线监控
 
-举报、拉黑、骚扰、低质消息、女性/新用户体验下降、消息回复质量、留存受损。
+举报、拉黑、骚扰、低质消息、女性/新用户体验下降、消息回复质量、留存受损。实验指标栏仍按核心指标类型只保留一个标准护栏。
 
 ### 常见误判
 
@@ -263,9 +262,9 @@ push、通知、召回、唤醒、到达、点击、频控、退订、通知关�
 
 到达率、展示、点击、点击后路径、频控命中、分人群效果、触达时段、文案/场景表现。
 
-### 护栏指标
+### 风险说明与上线监控
 
-通知关闭、退订、卸载、投诉、打扰、长期留存下降、其他 push 入口挤占。
+通知关闭、退订、卸载、投诉、打扰、长期留存下降、其他 push 入口挤占。实验指标栏仍按核心指标类型只保留一个标准护栏。
 
 ### 常见误判
 

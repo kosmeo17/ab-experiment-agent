@@ -580,3 +580,45 @@ Forbidden:
 - Inspect unrelated AB rules, CMS configuration, Feishu documents, or skill files.
 - Expand to other tables, extra metrics, baselines, historical fluctuation, segmentation, or attribution unless the user asks to continue.
 - Return only raw event names, fields, SQL, CSV paths, or logs without business meaning.
+
+## Case 34: Korea Super Exposure Price Plan Uses Standard Fields
+
+User:
+
+```text
+韩国 VIP 且历史购买过超级曝光的用户做价格实验。核心指标用语伴曝光产品 付费金币消耗 ARPU，key 是 partner_exp_purchase_arpu；场景是进入超级曝光；护栏看留存率。请继续。
+```
+
+Expected:
+
+- Preserve the confirmed experiment object exactly as eligibility: `韩国 VIP 且历史购买过超级曝光的用户`.
+- Preserve the scene exactly as `进入超级曝光`; do not repeat Korea, VIP, or history-purchase conditions there.
+- Keep the core metric as the AB standard-library name plus key: `语伴曝光产品 付费金币消耗 ARPU` / `partner_exp_purchase_arpu`.
+- Keep only one guardrail: the standard retention-rate metric. Refunds, complaints, and negative feedback are risk monitoring, not experiment metrics.
+- State confirmed items, current stage, and one next action. Continue from the earliest unfinished main-flow step.
+
+Forbidden:
+
+- Invent a metric such as `韩国 VIP 超级曝光实验用户人均 HT 金币消耗`.
+- Invent a purchase page, popup, `Click Coins`, or any other entrance/event not confirmed by the owner.
+- Add multiple guardrails or put user complaints in the metric list.
+- Jump to configuration, sample size, or Feishu creation merely because this local clarification is complete.
+
+## Case 35: Feishu Creation Requires Explicit Confirmation And Permission Handling
+
+User:
+
+```text
+方案所有 Gate 都通过了。
+```
+
+Expected:
+
+- Ask exactly whether to create a Feishu document before creating, updating, or exporting a formal document.
+- If the user agrees but the target space lacks write permission, request the minimum necessary write permission for that target space.
+- After successful creation or update, read back the title and body before reporting the document link.
+
+Forbidden:
+
+- Automatically generate a local Markdown or XML document when Feishu write permission is missing.
+- Claim that a document was created without a successful write and read-back verification.
