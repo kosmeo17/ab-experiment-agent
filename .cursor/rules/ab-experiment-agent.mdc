@@ -1,0 +1,25 @@
+---
+description: AB Experiment Agent repository rules
+alwaysApply: true
+---
+
+# AB Experiment Agent
+
+This repository packages an AB Experiment Agent. Treat `SKILL.md` as the canonical behavior spec.
+
+- Read `SKILL.md` before changing rules, assets, scripts, tests, or examples.
+- Read only the directly relevant files under `references/`.
+- For agent feedback, read `references/feedback-maintenance.md`.
+- For external CMS / DA / Feishu / UI / PRD capability freshness, read `references/dependency-version-checks.md`.
+- For user labels, read `references/user-labels.md`; real label knowledge must come from CMS / CMS-CLI read-only discovery.
+- Do not create, update, publish, send, or modify external Feishu / CMS / GitLab resources without explicit user authorization.
+- Do not store tokens, cookies, webhooks, session values, or credentials in files, logs, tables, git remotes, commit messages, or replies.
+- Keep owner-facing metric names in Chinese. English keys may appear only as system keys, event names, field names, or explanation.
+- When rule behavior changes, update the matching acceptance case and regression checklist.
+
+After editing this repo, run:
+
+```bash
+bash -n install.sh
+git diff --check
+```
