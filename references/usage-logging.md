@@ -84,13 +84,14 @@ python3 scripts/ab_setup.py --set-token "<token>"
 | `session_abort` | 设计中途结束 | 仅 `event_type=design_end` 且中途结束 |
 | `g1_necessity` | 必要性 | Gate 1 |
 | `g2_core_metric` | 核心指标 | Gate 2 |
-| `g3_audience_scene` | 实验对象与触发场景 | Gate 3 |
-| `g4_data_support` | 数据支持 | Gate 4 |
-| `g5_grouping` | 分组 | Gate 5 |
-| `g6_exclusion` | 互斥 | Gate 6 |
-| `g7_caliber` | 数据口径 | Gate 7 |
-| `g8_sample_gray` | 样本量/灰度 | Gate 8 |
-| `g9_formal_doc` | 正式文档 | Gate 9 |
+| `g3_audience` | 实验对象 | Gate 3 |
+| `g4_scene` | 实验场景 | Gate 4 |
+| `g5_data_support` | 数据支持 | Gate 5 |
+| `g6_grouping` | 分组 | Gate 6 |
+| `g7_exclusion` | 互斥 | Gate 7 |
+| `g8_caliber` | 数据口径 | Gate 8 |
+| `g9_sample_gray` | 样本量/灰度 | Gate 9 |
+| `g10_formal_doc` | 正式文档 | Gate 10 |
 
 ## 写入时机（硬规则）
 
@@ -98,7 +99,7 @@ python3 scripts/ab_setup.py --set-token "<token>"
 |------|------------|------------|
 | 初始化成功 | `setup` | `setup` |
 | 开始进入设计（进入 Gate1） | `design_start` | `session` |
-| 某个 Gate **刚确认通过** | `stage_pass` | `g1`…`g9` 对应码 |
+| 某个 Gate **刚确认通过** | `stage_pass` | `g1`…`g10` 对应码 |
 | 设计完整收口 | `design_end` | `session_complete` |
 | 设计中途结束 | `design_end` | `session_abort` |
 
@@ -108,7 +109,7 @@ python3 scripts/ab_setup.py --set-token "<token>"
 
 | 类型 | stage_code | end_status | 何时写 |
 |------|------------|------------|--------|
-| **完整收口** | `session_complete` | `completed` | Gate9 已通过，且已完成「是否创建飞书文档？」询问收口（答「否」立即写；答「是」则在创建尝试结果回报后写） |
+| **完整收口** | `session_complete` | `completed` | Gate10 已通过，且已完成「是否创建飞书文档？」询问收口（答「否」立即写；答「是」则在创建尝试结果回报后写） |
 | **中途结束** | `session_abort` | `aborted` | 用户明确结束本轮（如「先到这里」「结束这个任务」），且尚未达到完整收口条件 |
 
 `extra_json` 对 `design_end` **必填**，至少包含：
@@ -116,7 +117,7 @@ python3 scripts/ab_setup.py --set-token "<token>"
 ```json
 {
   "end_status": "completed",
-  "last_completed_gate": "g9_formal_doc",
+  "last_completed_gate": "g10_formal_doc",
   "feishu_doc": "created|skipped|n/a"
 }
 ```
@@ -159,7 +160,7 @@ python3 scripts/usage_logger.py --event design_end --session-id S1 \
   --extra-json '{"end_status":"aborted","last_completed_gate":"g7_caliber"}'
 python3 scripts/usage_logger.py --event design_end --session-id S1 \
   --end-status completed --user-query "不创建飞书文档" --summary "Gate全过；已跳过飞书文档" \
-  --extra-json '{"end_status":"completed","last_completed_gate":"g9_formal_doc","feishu_doc":"skipped"}'
+  --extra-json '{"end_status":"completed","last_completed_gate":"g10_formal_doc","feishu_doc":"skipped"}'
 ```
 
 硬约束：写 `stage_pass` 时若缺少 `user_query` 或 `extra_json`，视为日志不合格，必须补写或更新该行后再继续。写 `design_end` 时必须带 `--end-status completed|aborted`，并写入对应 `stage_code`。

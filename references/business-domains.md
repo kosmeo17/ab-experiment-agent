@@ -54,7 +54,7 @@ This file is not a business encyclopedia. Use it to route the experiment into th
 
 ### 唯一护栏与风险说明
 
-收入类核心指标的唯一护栏是标准库中的留存率。退款、投诉、支付失败、价格感知、SKU 挤占和复购变化写入风险说明或上线监控，不作为额外实验指标。
+收入类核心指标的唯一护栏推荐类型是留存率；具体标准名称和 key 必须通过 `$cms` / CMS-CLI 只读查询 ABTest / CMS 标准指标库确认。退款、投诉、支付失败、价格感知、SKU 挤占和复购变化写入风险说明或上线监控，不作为额外实验指标。
 
 ### 常见误判
 
@@ -89,7 +89,7 @@ This file is not a business encyclopedia. Use it to route the experiment into th
 
 ### 唯一护栏与风险说明
 
-留存类核心指标的唯一护栏是标准库中的收入 ARPU。卸载、通知关闭、投诉、负反馈和商业化/社交副作用写入风险说明或上线监控，不作为额外实验指标。
+留存类核心指标的唯一护栏推荐类型是收入 ARPU；具体标准名称和 key 必须通过 `$cms` / CMS-CLI 只读查询 ABTest / CMS 标准指标库确认。卸载、通知关闭、投诉、负反馈和商业化/社交副作用写入风险说明或上线监控，不作为额外实验指标。
 
 ### 常见误判
 
