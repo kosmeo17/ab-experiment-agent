@@ -14,7 +14,7 @@ This repository packages an AB Experiment Agent. Treat `SKILL.md` as the canonic
 - For user labels, read `references/user-labels.md`; real label knowledge must come from CMS / CMS-CLI read-only discovery.
 - Do not create, update, publish, send, or modify external Feishu / CMS / GitLab resources without explicit user authorization.
 - Do not store tokens, cookies, webhooks, session values, or credentials in files, logs, tables, git remotes, commit messages, or replies.
-- Keep owner-facing metric names in Chinese. English keys may appear only as system keys, event names, field names, or explanation.
+- Keep owner-facing output in Chinese and business-readable terms. English keys, event names, and field names are internal details for system fields or CMS / DA configuration handoff only; do not include them in business-facing output.
 - When rule behavior changes, update the matching acceptance case and regression checklist.
 
 After editing this repo, run:

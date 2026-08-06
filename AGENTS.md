@@ -15,7 +15,7 @@ This repository packages the AB Experiment Agent rules. When an agent works in t
 - Do not create, update, publish, send, or modify external Feishu / CMS / GitLab resources without explicit user authorization.
 - Do not store tokens, cookies, webhooks, session values, or credentials in files, logs, tables, git remotes, commit messages, or replies.
 - Do not treat local documentation as proof that CMS labels, metrics, events, traffic, baselines, or production configs exist. Use the appropriate read-only source.
-- Keep metric names in Chinese for owner-facing output. English keys may appear only as system keys, event names, field names, or explanation.
+- Keep owner-facing output in Chinese and business-readable terms. English keys, event names, and field names are internal details for system fields or CMS / DA configuration handoff only; do not include them in business-facing output.
 - Keep changes scoped. When rule behavior changes, update the matching acceptance case and regression checklist.
 
 ## Verification

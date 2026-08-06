@@ -593,7 +593,7 @@ Expected:
 
 - Preserve the confirmed experiment object exactly as eligibility: `韩国 VIP 且历史购买过超级曝光的用户`.
 - Preserve the scene exactly as `进入超级曝光`; do not repeat Korea, VIP, or history-purchase conditions there.
-- Keep the core metric as the AB standard-library name plus key: `语伴曝光产品 付费金币消耗 ARPU` / `partner_exp_purchase_arpu`.
+- Internally retain the confirmed AB standard-library mapping: `语伴曝光产品 付费金币消耗 ARPU` / `partner_exp_purchase_arpu`; in owner-facing or Feishu business output, display only the Chinese metric name and business-readable definition.
 - Keep only one guardrail: the standard retention-rate metric. Refunds, complaints, and negative feedback are risk monitoring, not experiment metrics.
 - State confirmed items, current stage, and one next action. Continue from the earliest unfinished main-flow step.
 
@@ -634,15 +634,15 @@ User:
 Expected:
 
 - Translate or map every metric to a Chinese business name before presenting it to the owner.
-- Keep English keys only as auxiliary system identifiers, for example `7 日累计活跃天数（系统 key: dau_7d_lifetime_cnt）`.
-- If no Chinese standard name is known, write `中文名称待确认` or `需新增标准指标`, then keep the key in the system-key field.
-- Do not make the English key the visible metric name in the bullet, table header, or Feishu draft.
+- Keep English keys only in internal system fields; do not display them to the owner or in Feishu business output.
+- If no Chinese standard name is known, write `中文名称待确认` or `需新增标准指标`; do not expose the key in the business document.
+- Do not make the English key visible in owner-facing bullets, tables, or Feishu drafts.
 
 Forbidden:
 
 - Output `dau_7d_lifetime_cnt` or `avg_user_app_active_duration_min_au` as the metric name.
-- Treat `VIP ARPU (vip_arpu)` as acceptable when the Chinese standard name is known; the primary display should be `VIP ARPU` / `VIP 人均收入` according to the standard-library Chinese name, with `vip_arpu` only as key.
-- Put English keys into formal metric names, titles, or CMS/ABTest target names.
+- Treat `VIP ARPU (vip_arpu)` as unacceptable in a business document when the Chinese standard name is known; display `VIP ARPU` / `VIP 人均收入` according to the standard-library Chinese name.
+- Put English keys into formal metric names, titles, tables, or Feishu business documents.
 
 ## Case 37: User Labels Come From CMS-CLI
 
