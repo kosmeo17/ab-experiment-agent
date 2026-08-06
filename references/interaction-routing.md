@@ -17,7 +17,7 @@ Choose one mode from the user's request:
 
 ## Short-Summon Behavior
 
-If the user only says a short trigger such as `AB实验`, `帮我看个AB`, `review ab`, or `怎么写AB方案`, show a compact ability panel:
+If the user only says a short trigger such as `AB实验`, `帮我看个AB`, `review ab`, or `怎么写AB方案`, output the following compact ability panel as a complete unit. Do not summarize, reorder, or omit any of the six main capabilities or the `需要时，我也可以联动` section:
 
 ```text
 你可以把 AB 实验想法、方案草稿或飞书链接发我，我可以帮你推进这些事：
@@ -49,6 +49,8 @@ If the user only says a short trigger such as `AB实验`, `帮我看个AB`, `rev
 ```
 
 If the user replies only with a number, enter the corresponding mode and ask for the minimum source material needed.
+
+Do not append a separate `已确认项`、`当前阶段`、`建议下一步` status block after this short-summon panel. The panel's final line already tells the user how to continue.
 
 ## Guided Next-Step Menus
 
