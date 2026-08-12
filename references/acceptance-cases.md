@@ -733,3 +733,29 @@ Forbidden:
 - Maintain three divergent full rule copies for Codex, Cursor, and Claude Code.
 - Put secrets, tokens, private URLs with credentials, or external system write instructions into tool-specific entry files.
 - Treat Cursor / Claude compatibility as proof that external CMS / DA / Feishu abilities are available; those still depend on the user's local tools and authentication.
+
+## Case 41: Usage Logging Init And Gate Funnels
+
+User:
+
+```text
+帮我设计一个 Paywall 文案 AB 实验。我还没配过这个助手。
+```
+
+Expected:
+
+- Before entering design Gates, ask only for name (`中文名 英文名`), department, and Data-ai Token when missing; reuse DA profile/token when already present.
+- Persist identity and token via `scripts/ab_setup.py` into `~/.ab-experiment-agent/` only; never echo the full token.
+- After init succeeds, write `event_type=setup` to `ab_experiment_agent_log`.
+- When design starts, write `design_start`; on each Gate pass write `stage_pass` with the matching `stage_code` (`g1_necessity` … `g9_formal_doc`).
+- Write `design_end` with `--end-status completed` / `stage_code=session_complete` after Gate9 passes and the「是否创建飞书文档？」ask is closed (yes → after create attempt result; no → immediately).
+- Write `design_end` with `--end-status aborted` / `stage_code=session_abort` when the user explicitly ends mid-flow.
+- Follow `references/usage-logging.md`; log write failure must be reported without blocking confirmed design progress.
+
+Forbidden:
+
+- Enter necessity / metric design without completed init when name, department, or Data-ai Token is missing.
+- Write token into log rows, Feishu docs, git files, or assistant replies.
+- Skip `design_end` after Feishu-doc ask wrap-up or explicit user end.
+- Write a bare `design_end` without distinguishing `session_complete` vs `session_abort`.
+- Log every intermediate clarification or named lookup as a stage event.

@@ -11,7 +11,44 @@ description: 用于处理运营、商业化、产品、增长场景下的 AB 实
 
 本 skill 负责 AB 实验设计、评审、文档修订和跨能力交接。用户提供飞书/Lark 链接或明确要求文档工作时，可以把飞书/Lark 当作文档渠道使用。当产品规则、触发行为、前后端逻辑或 PRD 来源不清时，可以把 `$frank-prd-writer` 作为能力调用，但不要把它当成固定第一步。当需要确认基线、流量、事件可用性、样本量输入、监控数据或复盘结果时，路由给 `$da-agents`；不要编造或默认假设数据结果。涉及 ABTest 系统或推送系统的 CMS 配置时，把已经确认的配置清单交给 `$cms`：CMS 必须先做只读校验；任何测试/生产写入、发布、启用、停用、回滚、删除、刷新缓存或影响生产的操作，都必须按 CMS skill 的要求另行获得明确确认。
 
-当实验需要产品规则、DA、CMS、飞书、配置上线辅助、推送系统或复盘支持时，读取 `references/capability-routing.md`。当实验对象、推送人群、用户圈选、互斥或配置准备涉及用户标签时，读取 `references/user-labels.md`。当任务依赖 `$cms`、`$da-agents`、飞书 / Lark、UI / PRD 等外部能力的最新版本、最新配置结构、最新指标库、最新标签库或最新事件定义时，读取 `references/dependency-version-checks.md`，先提示用户检查更新状态；不得静默更新外部能力。当 owner、数据、产品或开发同事反馈本 skill 规则、输出、知识源、安装更新或兼容性问题时，读取 `references/feedback-maintenance.md`，先判断能否实现和影响范围；不得在未获明确授权时创建飞书多维表格、添加机器人、写入外部记录或保存 token。当需要在这些能力之间准备明确交接清单时，读取 `references/closed-loop-handoff.md`。
+当实验需要产品规则、DA、CMS、飞书、配置上线辅助、推送系统或复盘支持时，读取 `references/capability-routing.md`。当实验对象、推送人群、用户圈选、互斥或配置准备涉及用户标签时，读取 `references/user-labels.md`。当任务依赖 `$cms`、`$da-agents`、飞书 / Lark、UI / PRD 等外部能力的最新版本、最新配置结构、最新指标库、最新标签库或最新事件定义时，读取 `references/dependency-version-checks.md`，先提示用户检查更新状态；不得静默更新外部能力。当 owner、数据、产品或开发同事反馈本 skill 规则、输出、知识源、安装更新或兼容性问题时，读取 `references/feedback-maintenance.md`，先判断能否实现和影响范围；不得在未获明确授权时创建飞书多维表格、添加机器人、写入外部记录或保存 token。当需要在这些能力之间准备明确交接清单时，读取 `references/closed-loop-handoff.md`。使用日志与初始化（姓名、部门、Data-ai Token）读取 `references/usage-logging.md`；写入 `da_agent_data.ab_experiment_agent_log`，不得把 token 写入日志表或回复。
+
+## 初始化闸门
+
+进入设计主流程（必要性及之后的 Gate）前，必须完成使用日志初始化。只询问并确认三项：
+
+1. 姓名：`中文名 英文名`（如 `王璐 Kosmeo`）
+2. 部门（如 `商业化运营部`）
+3. Data-ai Token（用于 logapi 写日志；与 DA 的 data-ai / `LOGAPI_TOKEN` 同值时可复用）
+
+姓名与部门用于日志身份字段；Token 只写入本机 `~/.ab-experiment-agent/agent.env`（经 `scripts/ab_setup.py`），不回显全文。若本机已有 DA profile 或 Data-ai Token，缺什么再问什么。初始化成功后写一条 `event_type=setup`。未完成初始化不得进入正式设计推进；短召唤入口面板可先展示，但选中设计类能力后须先完成初始化。
+
+## 使用日志写入闸门
+
+读取 `references/usage-logging.md`。同一设计会话共用一个 `session_id`，按强制 Gate 写漏斗日志：
+
+| 时机 | event_type |
+|------|------------|
+| 初始化成功 | `setup` |
+| 开始进入设计（进入 Gate1） | `design_start` |
+| 某个 Gate 刚确认通过 | `stage_pass`（`stage_code=g1`…`g9`） |
+| 设计完整收口 | `design_end` + `stage_code=session_complete` |
+| 设计中途结束 | `design_end` + `stage_code=session_abort` |
+
+`design_end` 必须区分两种：`session_complete`（Gate9 通过并完成「是否创建飞书文档？」询问收口）与 `session_abort`（用户明确中途结束）。`extra_json.end_status` 同步写 `completed` / `aborted`。中间追问、点名查数、grilling 不写日志。日志写入失败须说明原因，但不得阻断已确认的设计推进；错误信息不得包含 token。
+
+优先使用：
+
+```bash
+python3 scripts/ab_setup.py --show
+python3 scripts/usage_logger.py --event design_start --session-id <id> --user-query "..." --summary "进入设计"
+python3 scripts/usage_logger.py --event stage_pass --session-id <id> --stage g1_necessity \
+  --user-query "<解锁该Gate的owner原话>" --summary "..." --extra-json '{"confirmed":{...}}'
+python3 scripts/usage_logger.py --event design_end --session-id <id> --end-status completed|aborted \
+  --user-query "..." --summary "..." --extra-json '{"end_status":"completed|aborted",...}'
+```
+
+`design_start` / `stage_pass` / `design_end` 必须带 `user_query`；`stage_pass` 与 `design_end` 还必须带非空 `extra_json`。`design_end` 不得省略 `--end-status`。
 
 ## 强制执行闸门
 
@@ -51,7 +88,7 @@ description: 用于处理运营、商业化、产品、增长场景下的 AB 实
 - 出现 `必须`、`不得`、`只能`、`不能`、`不要`、`硬流程`、`硬规则`、`Gate`、`P0`、`阻塞` 的句子，一律是硬规则。
 - 出现 `正式样本量`、`正式灰度`、`正式文档`、`已验证`、`已定稿`、`可进入配置准备` 时，必须先满足对应证据门槛；证据不足时只能写 `待确认`、`代理口径`、`粗估` 或 `待补齐`。
 - 对公司口径、公司 notebook、公司计算器、数据 BP、CMS 写操作、DA 查询口径这类来源规则，`优先` 表示：只要当前环境存在可访问来源，就必须先读取、运行或获得该来源结果；不能先用本地公式、脚本、AI 推断或历史近似替代。
-- 反馈维护、安装更新、机器人通知和 GitLab token 相关规则也按硬规则执行：没有明确授权不得写外部系统；token 只能用环境变量或本机凭据临时读取，不得写入仓库、表格、日志、remote URL 或回复正文。
+- 反馈维护、安装更新、机器人通知、使用日志和 GitLab token 相关规则也按硬规则执行：没有明确授权不得写外部系统；token 只能用环境变量或本机凭据临时读取，不得写入仓库、表格、使用日志字段、remote URL 或回复正文。使用日志必须按 `references/usage-logging.md` 在 setup / design_start / stage_pass / design_end 时机写入。
 - `建议`、`默认` 只用于表达方式或无正式结论的引导。如果该句同时限制正式结论、查数、样本量、灰度、上线或写入状态，按硬规则执行。
 
 如果任一 Gate 未通过：
@@ -219,6 +256,8 @@ description: 用于处理运营、商业化、产品、增长场景下的 AB 实
 - P0：回答局部追问后没有回到最早未完成 Gate，或未明确已确认项、当前阶段和唯一下一步。
 - P1：用户说`继续`后擅自重查数据、扩大对象、修改策略/价格结构、补造入口或跳过当前 Gate。
 - P1：方案所有 Gate 已通过后，没有先询问`是否创建飞书文档？`；缺少写入权限时默认生成本地 Markdown/XML，而不是请求目标空间最小写入授权。
+- P1：未完成姓名/部门/Data-ai Token 初始化就进入设计主流程；或在 setup / design_start / Gate `stage_pass` / `design_end` 时机漏写使用日志；或把 token 写入日志表、回复或本地仓库文件。
+- P1：Gate9 通过并完成「是否创建飞书文档？」询问收口后，或用户明确结束本轮后，未写 `design_end`；或写了 `design_end` 但未区分 `session_complete` / `session_abort`（`--end-status`）。
 - P0：owner 提供的支撑性原始证据没有完整保留在最终方案文末的`来源与附件`，或正文没有说明关键证据如何支持当前业务问题或机会。
 - P1：数据支持确认阶段展开具体事件名、字段、埋点、看板或查询口径，造成 owner 需要一次性补大量实现信息；正确问法只确认实验场景、实验对象、实验监测指标是否已有数据支持。
 - P0：分组信息仍无法让陌生读者理解每组真实用户体验，却继续进入互斥、样本量、灰度或正式飞书文档。

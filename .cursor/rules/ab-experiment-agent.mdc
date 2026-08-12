@@ -10,6 +10,7 @@ This repository packages an AB Experiment Agent. Treat `SKILL.md` as the canonic
 - Read `SKILL.md` before changing rules, assets, scripts, tests, or examples.
 - Read only the directly relevant files under `references/`.
 - For agent feedback, read `references/feedback-maintenance.md`.
+- For usage logging and first-run init (name / department / Data-ai Token), read `references/usage-logging.md`.
 - For external CMS / DA / Feishu / UI / PRD capability freshness, read `references/dependency-version-checks.md`.
 - For user labels, read `references/user-labels.md`; real label knowledge must come from CMS / CMS-CLI read-only discovery.
 - Do not create, update, publish, send, or modify external Feishu / CMS / GitLab resources without explicit user authorization.
