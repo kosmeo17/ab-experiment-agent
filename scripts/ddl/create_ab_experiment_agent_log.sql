@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS da_agent_data.ab_experiment_agent_log (
     department       VARCHAR(128)  NOT NULL COMMENT '部门',
     event_time       DATETIME      NOT NULL COMMENT '事件时间（东八区）',
     event_type       VARCHAR(32)   NOT NULL COMMENT 'setup|design_start|stage_pass|design_end',
-    stage_code       VARCHAR(64)   NOT NULL COMMENT 'setup|session|session_complete|session_abort|g1_necessity|...|g9_formal_doc',
+    stage_code       VARCHAR(64)   NOT NULL COMMENT 'setup|session|session_complete|session_abort|g1_necessity|...|g10_formal_doc',
     stage_name       VARCHAR(64)   NOT NULL COMMENT '阶段中文名；design_end 用 session_complete=完整收口 / session_abort=中途结束',
     client_tool      VARCHAR(32)   NULL     COMMENT 'cursor|codex|claude',
     user_query       TEXT          NULL     COMMENT '用户原话',
