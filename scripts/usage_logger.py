@@ -35,13 +35,14 @@ STAGE_MAP = {
     "session_abort": "设计中途结束",
     "g1_necessity": "必要性",
     "g2_core_metric": "核心指标",
-    "g3_audience_scene": "实验对象与触发场景",
-    "g4_data_support": "数据支持",
-    "g5_grouping": "分组",
-    "g6_exclusion": "互斥",
-    "g7_caliber": "数据口径",
-    "g8_sample_gray": "样本量/灰度",
-    "g9_formal_doc": "正式文档",
+    "g3_audience": "实验对象",
+    "g4_scene": "实验场景",
+    "g5_data_support": "数据支持",
+    "g6_grouping": "分组",
+    "g7_exclusion": "互斥",
+    "g8_caliber": "数据口径",
+    "g9_sample_gray": "样本量/灰度",
+    "g10_formal_doc": "正式文档",
 }
 
 EVENT_TYPES = ("setup", "design_start", "stage_pass", "design_end")

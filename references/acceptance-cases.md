@@ -734,28 +734,34 @@ Forbidden:
 - Put secrets, tokens, private URLs with credentials, or external system write instructions into tool-specific entry files.
 - Treat Cursor / Claude compatibility as proof that external CMS / DA / Feishu abilities are available; those still depend on the user's local tools and authentication.
 
-## Case 41: Usage Logging Init And Gate Funnels
+## Case 41: Standard Metrics, Object/Scene, And Source Boundaries
 
 User:
 
 ```text
-帮我设计一个 Paywall 文案 AB 实验。我还没配过这个助手。
+我给你一个飞书 PRD，帮我一步步补 AB 方案。指标你先按标准库找，普通聊天里不用每次放来源。
 ```
 
 Expected:
 
-- Before entering design Gates, ask only for name (`中文名 英文名`), department, and Data-ai Token when missing; reuse DA profile/token when already present.
-- Persist identity and token via `scripts/ab_setup.py` into `~/.ab-experiment-agent/` only; never echo the full token.
-- After init succeeds, write `event_type=setup` to `ab_experiment_agent_log`.
-- When design starts, write `design_start`; on each Gate pass write `stage_pass` with the matching `stage_code` (`g1_necessity` … `g9_formal_doc`).
-- Write `design_end` with `--end-status completed` / `stage_code=session_complete` after Gate9 passes and the「是否创建飞书文档？」ask is closed (yes → after create attempt result; no → immediately).
-- Write `design_end` with `--end-status aborted` / `stage_code=session_abort` when the user explicitly ends mid-flow.
-- Follow `references/usage-logging.md`; log write failure must be reported without blocking confirmed design progress.
+- Default to asking the single highest-priority missing Gate item; do not output a pending skeleton unless the user explicitly asks for a draft, plan text, or Feishu create/update.
+- Ask experiment object and experiment scene as separate steps: first who enters randomization, then where/when those users are affected.
+- Use `$cms` / CMS-CLI read-only discovery for ABTest / CMS standard experiment metrics, experiment scenes, and result dimensions; preserve standard names and keys internally.
+- Use `$da-agents` only for data definitions and feasibility such as events, fields, numerator, denominator, windows, baseline, traffic, and sample-size inputs.
+- Treat `business-domains.md` as business understanding and risk guidance only; it cannot supply standard metric names, keys, scenes, or result dimensions.
+- Preserve source links in Feishu / formal docs / requested deliverable drafts, but do not append a `来源与附件` section to ordinary chat, step-by-step questions, local explanations, or metric confirmation.
 
 Forbidden:
 
-- Enter necessity / metric design without completed init when name, department, or Data-ai Token is missing.
-- Write token into log rows, Feishu docs, git files, or assistant replies.
-- Skip `design_end` after Feishu-doc ask wrap-up or explicit user end.
-- Write a bare `design_end` without distinguishing `session_complete` vs `session_abort`.
-- Log every intermediate clarification or named lookup as a stage event.
+- Use `business-domains.md`, historical documents, Feishu prose, or AI inference as the standard metric library.
+- Combine experiment object and trigger scene into one broad question.
+- Add `来源与附件` to every chat reply merely because the user provided a document.
+- Start by generating a `待补齐版` when the user asked for step-by-step clarification rather than a draft.
+
+## Case 42: Usage Logging Init And Ten-Gate Funnel
+
+Expected:
+
+- Keep the `8869a9a` baseline behavior while adding usage logging.
+- Write `setup`, `design_start`, then `stage_pass` codes through `g10_formal_doc`; object and scene use separate codes.
+- Write `session_complete` only after Gate10 and document-choice closure; write `session_abort` for explicit mid-flow ending.

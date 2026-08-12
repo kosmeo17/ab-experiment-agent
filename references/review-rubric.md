@@ -77,13 +77,13 @@ Before grouping design, the plan must define evaluation metrics: core metric and
 
 This is different from the business goal in necessity. The goal explains why the experiment matters; evaluation metrics explain how the experiment result will be judged and interpreted.
 
-Identify the business domain before proposing or judging metrics. Read `business-domains.md` when metric choice, guardrails, strategy validity, business risk, or cross-business side effects are involved. Use the primary domain for the core metric and any affected domains for guardrail metrics. If the domain is inferred rather than provided, mark it as `AI 推断` and state what assumption needs confirmation.
+Identify the business domain before proposing or judging metric types. Read `business-domains.md` when metric type, guardrail risk, strategy validity, business risk, or cross-business side effects are involved. `business-domains.md` is not the standard metric library; standard experiment metric, scene, and result-dimension names/keys must come from `$cms` / CMS-CLI read-only discovery. Use the primary domain for the core metric type. Affected secondary domains go into risk notes or launch monitoring, not additional guardrail entries. If the domain is inferred rather than provided, mark it as `AI 推断` and state what assumption needs confirmation.
 
 In coaching conversations, infer candidate metrics from the necessity context and give options. Options 1-3 should be concrete metric candidates; option 4 should let the owner provide a different metric. Keep core metric options and observation metric options separate, and state the recommended option with the reason.
 
 When the owner does not know how to write metrics, do not only ask them to choose from a blank list. Recommend 1 core metric and 2 alternatives from the business domain. For each option, state why it fits, when it is suitable, what risk it may hide, and which assumption needs confirmation.
 
-Core metric is single-select. Must-watch/observation metrics are multi-select. The core metric is the experiment's main judgment standard; observation metrics can include multiple funnel, module, business-line, or guardrail metrics.
+Core metric is single-select. Must-watch/observation metrics are multi-select. The core metric is the experiment's main judgment standard; observation metrics can include multiple funnel, module, or business-line diagnostics. Guardrail is a separate single metric, not part of the observation list.
 
 Ask metric choices in two turns by default: core metric first, then must-watch/observation metrics. Do not mix the single-select and multi-select questions in one turn unless the user explicitly wants a compact/full review.
 
@@ -92,7 +92,7 @@ Required:
 - One core metric that decides whether the experiment succeeds.
 - The core metric directly affects the business goal, can be observed within the experiment cycle, and can be directly influenced by the strategy.
 - Must-watch/observation metrics that cover business-line performance and directly affected module performance.
-- Business-domain guardrail metrics for likely side effects, such as retention, refund, complaint, payment failure, harassment, false positive/误伤, teacher supply, or push opt-out depending on the domain.
+- One business-domain guardrail metric for the most important likely side effect. Retention or revenue ARPU can be recommended as the single guardrail by core metric type; refund, complaint, payment failure, harassment, false positive/误伤, teacher supply, or push opt-out belong in risk notes or launch monitoring unless the owner explicitly selects one as the unique guardrail.
 - Each proposed metric is tied to the business goal and experiment strategy.
 - Each proposed metric can plausibly be influenced by the experiment strategy.
 - Each proposed metric can be observed within the experiment cycle.
@@ -146,7 +146,7 @@ Fail signals:
 
 Judge whether new data requirements are needed after grouping is clear.
 
-The business goal should already be confirmed in necessity, and evaluation metrics should already be confirmed before grouping. This gate checks whether the experiment needs additional data work: category-level support for the experiment scene, experiment population, core metric, observation metrics, guardrail metrics, and only then detailed event/label/dimension/dashboard support when needed.
+The business goal should already be confirmed in necessity, and evaluation metrics should already be confirmed before grouping. This gate checks whether the experiment needs additional data work: category-level support for the experiment scene, experiment population, core metric, observation metrics, the single guardrail metric, and only then detailed event/label/dimension/dashboard support when needed.
 
 This gate is a system-support gap check, not a place to redesign goals, metrics, or groups. In operator-facing coaching, ask whether the confirmed categories are already supported by the current system, dashboard, or push system. Do not default to a field-level checklist of group assignment, trigger events, delivery, clicks, or jump-target tracking; use those only for implementation handoff detail or launch-readiness checks. If all required support is confirmed by the user or source material, operator-facing output may say `新增数据需求：无`. If unsupported or unknown, identify the missing category and whether a new data requirement must be raised.
 
@@ -154,7 +154,7 @@ Required:
 
 - Experiment scene and experiment population can be configured or have a documented substitute.
 - Core metric is tied directly to the experiment goal.
-- Must-watch/observation and guardrail metrics cover directly affected modules, revenue, retention, payment, push, experience, and other business lines as needed.
+- Must-watch/observation metrics and the single guardrail metric cover directly affected modules, revenue, retention, payment, push, experience, and other business lines as needed.
 - The confirmed business domain's required category-level support is checked, or the missing support is raised as a new data requirement.
 - Metric definitions, data source, split dimensions, and success standard are clear.
 - Existing system, push system, dashboards, labels/events/dimensions where relevant, or documented substitutes are confirmed by the user, pasted material, or a data/config owner; missing categories are raised early as new data requirements.
@@ -259,7 +259,7 @@ Fail signals:
 
 Retrospective and post-result actions are not default coaching questions.
 
-For ordinary plan generation, add a reminder that final continue/stop/extend/expand decisions should be made during retrospective based on actual core metric movement, guardrail metrics, accumulated sample size, and business context. Do not ask what the team will do under positive, negative, or flat results as a required question.
+For ordinary plan generation, add a reminder that final continue/stop/extend/expand decisions should be made during retrospective based on actual core metric movement, the single guardrail metric, accumulated sample size, and business context. Do not ask what the team will do under positive, negative, or flat results as a required question.
 
 For explicit retrospective templates:
 

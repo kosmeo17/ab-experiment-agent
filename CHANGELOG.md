@@ -20,13 +20,13 @@
 
 ### Changed
 
-- **按强制 Gate 打点**：除初始化与会话起止外，每个 Gate 通过写一条 `stage_pass`（`g1_necessity` … `g9_formal_doc`），用于设计漏斗分析。
+- **按强制 Gate 打点**：除初始化与会话起止外，每个 Gate 通过写一条 `stage_pass`（`g1_necessity` … `g10_formal_doc`），用于设计漏斗分析。
 - **日志字段约束收紧**：
   - `design_start` / `stage_pass` / `design_end` 必须带 `user_query`。
   - `stage_pass` / `design_end` 必须带非空 `extra_json`（确认点摘要；禁止 token）。
   - `stage_pass` 必须带 `result_summary`。
 - **`design_end` 区分完整收口与中途结束**（`event_type` 仍为 `design_end`）：
-  - 完整收口：`stage_code=session_complete`，`extra_json.end_status=completed`（Gate9 通过并完成「是否创建飞书文档？」询问收口）。
+  - 完整收口：`stage_code=session_complete`，`extra_json.end_status=completed`（Gate10 通过并完成「是否创建飞书文档？」询问收口）。
   - 中途结束：`stage_code=session_abort`，`extra_json.end_status=aborted`（用户明确结束本轮）；CLI 必填 `--end-status completed|aborted`。
 - **Token 加载优先级**：`~/.ab-experiment-agent/agent.env` 优先于进程环境变量与 DA 全局 env，避免旧 Token 覆盖本次配置。
 

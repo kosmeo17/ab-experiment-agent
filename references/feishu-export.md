@@ -37,7 +37,7 @@
 
 ## 业务正文边界
 
-飞书正文面向业务读者，只写事实、结论、业务可读定义和待确认项：
+飞书正文面向业务读者，只写事实、结论、业务可读定义和待确认项。以下来源保留规则只约束飞书 / Lark 文档、正式方案文档和用户明确要求的可交付草稿；普通聊天、逐步追问、局部解释或指标确认，不默认追加`来源与附件`。
 
 - `评估指标`固定包含核心指标、过程指标和护栏指标。过程指标可由 agent 推荐，但必须经 owner 确认；未确认时写`待确认：过程指标`，不得默认写`无`。护栏只能有一项，也必须经 owner 确认。
 - 指标用中文名称和简短业务口径展示。不得展示 key、事件名、字段名、标准库映射状态、owner 确认状态、AI 状态、承载系统、服务开关、配置路径或任何系统/配置细节。
@@ -59,7 +59,7 @@
 
 ## 写入或更新文档
 
-所有 Gate 通过后，必须先问 owner：`是否创建飞书文档？` 用户同意后才进入创建或更新路径。Gate9 通过时先写使用日志 `stage_pass`（`stage_code=g9_formal_doc`）。随后完成「是否创建飞书文档？」询问收口后，必须写 `design_end` 且 `--end-status completed`（`stage_code=session_complete`）：owner 回答「否」则立即写入；回答「是」则在创建/更新尝试结果回报后再写入。用户中途结束则写 `--end-status aborted`（`session_abort`），不要写成 complete。口径见 `references/usage-logging.md`。
+所有 Gate 通过后，必须先问 owner：`是否创建飞书文档？` 用户同意后才进入创建或更新路径。Gate10 通过时先写使用日志 `stage_pass`（`stage_code=g10_formal_doc`）。随后完成「是否创建飞书文档？」询问收口后，必须写 `design_end` 且 `--end-status completed`（`stage_code=session_complete`）：owner 回答「否」则立即写入；回答「是」则在创建/更新尝试结果回报后再写入。用户中途结束则写 `--end-status aborted`（`session_abort`），不要写成 complete。口径见 `references/usage-logging.md`。
 
 当用户明确要求创建或更新飞书/Lark 文档，或已明确同意创建飞书文档时：
 
