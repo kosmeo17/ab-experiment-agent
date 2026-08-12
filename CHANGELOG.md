@@ -6,10 +6,12 @@
 
 ## [2026-08-12] - 使用日志
 
+本次在分支 `ivan` 完成：**新建 ivan Branch；新增日志写入和初始化配置功能。**
+
 ### Added
 
 - **使用日志**：新增单表 `da_agent_data.ab_experiment_agent_log`（DDL：`scripts/ddl/create_ab_experiment_agent_log.sql`），经 logapi / Data-ai Token 写入，对齐 da_agents_v2 的公共库写入方式。
-- **初始化三问**：进入设计主流程前只需提供姓名（`中文名 英文名`）、部门、Data-ai Token；落盘至 `~/.ab-experiment-agent/`（`profile.yaml` + `agent.env`），不回显完整 Token。
+- **初始化配置**：进入设计主流程前只需提供姓名（`中文名 英文名`）、部门、Data-ai Token；落盘至 `~/.ab-experiment-agent/`（`profile.yaml` + `agent.env`），不回显完整 Token。
 - **本地脚本**：
   - `scripts/ab_setup.py`：写入 / 查看初始化状态；优先读取本机 AB 配置，可回退复用 DA Token。
   - `scripts/usage_logger.py`：写入 `setup` / `design_start` / `stage_pass` / `design_end`。
