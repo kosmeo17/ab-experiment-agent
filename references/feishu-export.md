@@ -59,7 +59,7 @@
 
 ## 写入或更新文档
 
-所有 Gate 通过后，必须先问 owner：`是否创建飞书文档？` 用户同意后才进入创建或更新路径。
+所有 Gate 通过后，必须先问 owner：`是否创建飞书文档？` 用户同意后才进入创建或更新路径。Gate9 通过时先写使用日志 `stage_pass`（`stage_code=g9_formal_doc`）。随后完成「是否创建飞书文档？」询问收口后，必须写 `design_end` 且 `--end-status completed`（`stage_code=session_complete`）：owner 回答「否」则立即写入；回答「是」则在创建/更新尝试结果回报后再写入。用户中途结束则写 `--end-status aborted`（`session_abort`），不要写成 complete。口径见 `references/usage-logging.md`。
 
 当用户明确要求创建或更新飞书/Lark 文档，或已明确同意创建飞书文档时：
 
@@ -67,6 +67,7 @@
 2. 除非用户要求直接写入，否则先按默认章节准备内容。
 3. 写入或更新成功后，回读验证标题、顶部状态、章节、表格和来源链接，再报告工具返回的文档链接或目标。
 4. 写入或更新失败时，报告失败原因；若是目标空间没有写权限，明确请求目标空间最小必要写入授权。未授权时不得默认生成本地 Markdown、XML 或替代文档。
+5. 若本次属于 Gate 全过后的正式收口路径，在询问与文档动作完成后写 `design_end --end-status completed`（`result_summary` 简述是否创建及结果）。
 
 不要因为方案成熟就自动创建或更新文档；但一旦用户明确要求，不能以流程未完成为由拒绝创建`待补齐版`。
 

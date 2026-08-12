@@ -47,6 +47,7 @@ unset AB_EXPERIMENT_AGENT_GIT_TOKEN
 - 实验对象只描述分组资格，实验场景只描述实际受影响的产品行为或位置，避免重复人群条件或补造入口。
 - 每轮会说明当前已确认内容、所在阶段和唯一下一步；局部问题确认后会回到主流程最早未完成步骤。
 - 所有 Gate 通过后会先询问是否创建飞书文档；如果没有目标空间写权限，会请求最小必要授权，不会默认生成本地 Markdown 替代飞书文档。
+- 首次进入设计前只需提供三项：姓名（中文名 英文名）、部门、Data-ai Token。使用日志写入 `ab_experiment_agent_log`：初始化、设计开始、每个 Gate 通过、设计结束（Gate9 + 飞书文档询问收口，或用户明确结束本轮）。
 
 ## 使用
 
@@ -100,6 +101,8 @@ $cms
 - 用户标签：`references/user-labels.md`
 - 依赖版本检查：`references/dependency-version-checks.md`
 - 反馈维护闭环：`references/feedback-maintenance.md`
+- 使用日志与初始化：`references/usage-logging.md`
+- 变更记录：`CHANGELOG.md`
 - 飞书文档边界：`references/feishu-export.md`
 - 样本量与灰度：`references/sample-size-gray.md`
 

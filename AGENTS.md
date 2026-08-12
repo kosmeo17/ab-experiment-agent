@@ -7,6 +7,7 @@ This repository packages the AB Experiment Agent rules. When an agent works in t
 - Read `SKILL.md` before changing rules, assets, scripts, tests, or examples.
 - Read only the directly relevant files under `references/` for the current task.
 - For feedback about this agent, read `references/feedback-maintenance.md`.
+- For usage logging and first-run init (name / department / Data-ai Token), read `references/usage-logging.md`.
 - For external CMS / DA / Feishu / UI / PRD capability freshness, read `references/dependency-version-checks.md`.
 - For user labels, read `references/user-labels.md` and use CMS / CMS-CLI read-only discovery when real label knowledge is needed.
 
