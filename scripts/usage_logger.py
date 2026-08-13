@@ -20,6 +20,7 @@ from ab_setup import (  # noqa: E402
     get_logapi_url,
     get_token,
     load_profile,
+    mark_setup_log_written,
     setup_status,
     try_reuse_da_profile,
 )
@@ -212,8 +213,13 @@ def write_event(
     if dry_run:
         return {"dry_run": True, "row": row}
     result = logapi_insert(row)
+    setup_marked = False
+    if event_type == "setup":
+        mark_setup_log_written(row["log_id"], row["session_id"])
+        setup_marked = True
     return {
         "inserted": result,
+        "setup_log_marked": setup_marked,
         "row": {
             "log_id": row["log_id"],
             "session_id": row["session_id"],

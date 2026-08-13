@@ -763,5 +763,38 @@ Forbidden:
 Expected:
 
 - Keep the `8869a9a` baseline behavior while adding usage logging.
+- Treat init as complete only when identity fields are ready **and** a successful `event_type=setup` write is marked (`setup_log_ok=true`).
 - Write `setup`, `design_start`, then `stage_pass` codes through `g10_formal_doc`; object and scene use separate codes.
 - Write `session_complete` only after Gate10 and document-choice closure; write `session_abort` for explicit mid-flow ending.
+
+Forbidden:
+
+- Enter necessity / metric design without completed init when name, department, Data-ai Token, or successful setup log is missing.
+- Write token into log rows, Feishu docs, git files, or assistant replies.
+- Skip `design_end` after Feishu-doc ask wrap-up or explicit user end.
+- Write a bare `design_end` without distinguishing `session_complete` vs `session_abort`.
+- Log every intermediate clarification or named lookup as a stage event.
+- Treat local profile/token alone as complete without a successful setup log write.
+
+## Case 43: Post-Update Forced Logging Init For Existing Codex Users
+
+User (already used AB agent before, just ran install.sh update):
+
+```text
+帮我看一个 Paywall AB 实验
+```
+
+Expected:
+
+- First run `scripts/ab_setup.py --show` (or `--json`) before necessity questions.
+- If identity fields missing: ask only for name, department, and Data-ai Token, using opener `AB 实验助手已有更新。`
+- If `fields_ready=true` but `setup_log_ok=false`: do not re-ask identity; write `usage_logger.py --event setup` once.
+- Do not write `design_start` until `complete=true` (identity + successful setup log).
+- Even users who already had local profile/token must still get one setup log row.
+
+Forbidden:
+
+- Skip init check because the user “already used this agent before”.
+- After skill update, continue AB design without running `ab_setup.py --show` when `needs_migration` is true.
+- Ask design questions (必要性/指标/分组等) while logging init is incomplete.
+- Re-ask name/department/token when only `setup日志` is missing.

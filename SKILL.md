@@ -15,7 +15,20 @@ description: 用于处理运营、商业化、产品、增长场景下的 AB 实
 
 ## 初始化与使用日志
 
-进入设计主流程前，完成姓名、部门和 Data-ai Token 初始化；初始化成功写 `setup`。同一设计会话进入 Gate1 写 `design_start`，每个 Gate 通过写 `stage_pass`，完整收口写 `session_complete`，中途结束写 `session_abort`。日志码按现有 10 Gate：`g1_necessity`、`g2_core_metric`、`g3_audience`、`g4_scene`、`g5_data_support`、`g6_grouping`、`g7_exclusion`、`g8_caliber`、`g9_sample_gray`、`g10_formal_doc`。日志失败不得阻断已确认的设计推进。
+进入设计主流程前，完成姓名、部门和 Data-ai Token 初始化。**即使本地身份已配齐，也必须成功写入一条 `event_type=setup` 日志**（本地 `setup_log_ok=true`）后，才算初始化完成。同一设计会话进入 Gate1 写 `design_start`，每个 Gate 通过写 `stage_pass`，完整收口写 `session_complete`，中途结束写 `session_abort`。日志码按现有 10 Gate：`g1_necessity`、`g2_core_metric`、`g3_audience`、`g4_scene`、`g5_data_support`、`g6_grouping`、`g7_exclusion`、`g8_caliber`、`g9_sample_gray`、`g10_formal_doc`。日志失败不得阻断已确认的设计推进。
+
+### 更新后强制补初始化（Codex 老用户）
+
+老用户通过 `install.sh` 更新 skill 后，本机往往还没有 `~/.ab-experiment-agent/` 配置，或虽有身份但未写过 setup 日志。处理硬规则：
+
+1. 任意 AB 设计 / 评审 / 方案生成意图开始时（含自然语言触发、`$ab-experiment-agent`、短召唤后进入设计），**先执行**：
+   - `python3 scripts/ab_setup.py --show --json`（Codex 安装路径下为 `$CODEX_HOME/skills/ab-experiment-agent/scripts/ab_setup.py`）
+2. 若 `complete=false` 或 `needs_migration=true`：
+   - **立即停止**进入必要性等 Gate，不得先写 `design_start`
+   - 若 `fields_ready=false`：用迁移话术只追问姓名 / 部门 / Token。默认话术：`AB 实验助手已有更新。你之前可能已在用本助手，更新后需补一次初始化（姓名、部门、Data-ai Token），完成后才能继续设计并上传日志。请先提供：…`
+   - 若 `fields_ready=true` 且仅缺 `setup日志`：**不要重问身份**，直接执行 `python3 scripts/usage_logger.py --event setup --summary "初始化完成" --client-tool <cursor|codex|claude>`；写成功后本地会标记 `setup_log_ok`
+3. `complete=true`（身份齐 + setup 日志已成功）后，才可写 `design_start` 并进入设计。
+4. `install.sh` 更新结束时若检测到未完整初始化，会写入 `NEEDS_LOGGING_SETUP` 并提示；Agent 以 `--show` 为准。
 
 ## 强制执行闸门
 

@@ -71,7 +71,8 @@
 59. `business-domains.md` 只能用于业务理解、护栏风险和运营表达，不得作为标准指标、标准场景或结果维度来源。
 60. 未通过 Gate 时默认只问当前最高优先级缺失项；只有用户明确要求草稿、方案文本、飞书创建或飞书更新时，才输出或写入`待补齐版`。
 61. 标准项查询和数据口径验证必须分工清楚：CMS 管实验指标 / 实验场景 / 结果维度标准项，DA 管事件、字段、分子分母、窗口、基线、流量和可查性。
-62. 使用日志必须保留现有 10 Gate：对象与场景分别记录为 `g3_audience` / `g4_scene`，正式文档为 `g10_formal_doc`；日志失败不得阻断设计推进。
+62. 使用日志必须保留现有 10 Gate：对象与场景分别记录为 `g3_audience` / `g4_scene`，正式文档为 `g10_formal_doc`；进入设计前必须完成姓名（中文名 英文名）、部门、Data-ai Token 初始化并成功写 `setup`；设计开始写 `design_start`，每个 Gate 通过写 `stage_pass`；完整收口写 `design_end` + `session_complete`，中途结束写 `design_end` + `session_abort`（必须带 `--end-status`）。Token 不得进入日志表、回复或仓库文件；日志失败不得阻断设计推进。
+63. 老用户更新 skill 后：进入设计前必须先跑 `ab_setup.py --show`；未 `complete` 时不得写 `design_start`。身份缺则追问；仅缺 setup 日志则自动写 setup、不重问身份。本地已配齐身份也必须成功写一条 setup（`setup_log_ok`）后才算完成。
 
 ## 禁止回退
 

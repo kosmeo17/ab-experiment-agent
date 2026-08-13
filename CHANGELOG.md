@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+### Added
+
+- **更新后强制补初始化**：`install.sh` 更新结束检查日志初始化；未完成则写入 `NEEDS_LOGGING_SETUP`。Agent 进入设计前必须 `--show`；未 `complete` 不得 `design_start`。缺身份时开场话术：`AB 实验助手已有更新。`
+- **配齐也要写 setup**：`complete` 要求身份字段就绪 **且** 成功写过 `event_type=setup`（`setup_log_ok`）。本地已有姓名/部门/Token 时不重问身份，但必须自动写一条 setup；写入成功后才允许进入设计。
+- **验收与回归**：Acceptance Case 42/43；回归清单第 62/63 条。
+
 ## [2026-08-12] - 使用日志
 
 本次在分支 `ivan` 完成：**新建 ivan Branch；新增日志写入和初始化配置功能。**

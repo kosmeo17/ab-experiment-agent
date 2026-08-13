@@ -26,12 +26,34 @@ AB 实验助手使用日志写入 MySQL `da_agent_data.ab_experiment_agent_log`�
 - 缺任一则先完成初始化，再进入必要性等设计 Gate。
 - Token 只粘贴到对话或经 `ab_setup.py --set-token` 写入本地 env；**不回显全文**，不入库、不进飞书、不进日志表、不进 commit。
 - 若本机已有 DA Agents 的 `profile.yaml`（`user_name` / `department`）或 `DATA_AI_MCP_TOKEN` / `LOGAPI_TOKEN`，可复用；缺什么再问什么。
-- 初始化成功后立刻写一条 `event_type=setup`。
+- 初始化完成条件：`fields_ready`（姓名/部门/Token）**且** 成功写入一条 `event_type=setup`（本地 `setup_log_ok=true`）。
+- **即使本地身份已配齐，也必须再写一条 setup**；`usage_logger.py --event setup` 成功后会自动 `mark_setup_log_written` 并清除 `NEEDS_LOGGING_SETUP`。
+- 仅身份齐、未写 setup：`complete=false`，`missing` 含 `setup日志`，Agent 应自动写 setup，不重问身份。
+
+### 更新后老用户怎么被拦住
+
+| 环节 | 行为 |
+|------|------|
+| `install.sh` 更新结束 | 跑 `ab_setup.py --show`；未完整则 `--mark-needs-setup` |
+| Agent 每次进入设计 | 先 `--show --json`；未 `complete` 不得 `design_start` |
+| 缺身份字段 | 追问姓名/部门/Token |
+| 仅缺 setup 日志 | 自动写 `setup`，不重问身份 |
+| `complete=true` | 才进入设计 Gate |
+
+面向老用户话术（缺身份时）：
+
+```text
+AB 实验助手已有更新。你之前可能已在用本助手，更新后需补一次初始化（姓名、部门、Data-ai Token），完成后才能继续设计并上传日志。
+请先提供：1) 姓名（中文名 英文名） 2) 部门 3) Data-ai Token（已有 DA Token 可复用，不必重贴）。
+```
+
+身份已齐仅缺 setup 时，无需对用户追问，直接写 setup 即可。
 
 检查命令：
 
 ```bash
 python3 scripts/ab_setup.py --show
+python3 scripts/ab_setup.py --mark-needs-setup
 python3 scripts/ab_setup.py --set-profile "王璐 Kosmeo" "商业化运营部"
 python3 scripts/ab_setup.py --set-token "<token>"
 ```

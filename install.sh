@@ -149,6 +149,24 @@ check_git_remote_update "AB 实验助手" "$TARGET"
 check_git_remote_update "DA Agents v2" "$DA_HOME"
 echo "  ! CMS-CLI、lark-cli 和其他外部 agent 可能独立更新；正式查数、CMS 配置、用户标签、指标库读取前，建议先检查对应工具是否有新版本。"
 
+echo
+echo "使用日志初始化检查："
+if [[ -f "$TARGET/scripts/ab_setup.py" ]]; then
+  if python3 "$TARGET/scripts/ab_setup.py" --show >/dev/null 2>&1; then
+    python3 "$TARGET/scripts/ab_setup.py" --mark-needs-setup >/dev/null 2>&1 || true
+    echo "  ✓ 日志初始化已完整（身份字段 + 已成功写过 setup 日志）"
+  else
+    python3 "$TARGET/scripts/ab_setup.py" --mark-needs-setup || true
+    echo "  ! 检测到尚未完成日志初始化（老用户更新后常见）。"
+    echo "    完整条件：姓名 / 部门 / Data-ai Token，并且成功写入一条 setup 日志。"
+    echo "    重启 Codex 后，下一次 AB 设计请求会先补初始化；身份已齐时会自动写 setup，不重复追问。"
+    echo "    也可手动检查：python3 \"$TARGET/scripts/ab_setup.py\" --show"
+    echo "    未完成前不会进入正式实验设计，也无法按新规则上传使用日志。"
+  fi
+else
+  echo "  ! 未找到 scripts/ab_setup.py，跳过初始化检查"
+fi
+
 if [[ -n "$GIT_TOKEN" ]]; then
   echo
   echo "Git 认证：已使用临时环境变量读取 token；脚本不会输出 token，也不会把 token 写入仓库。"
